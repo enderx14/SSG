@@ -1,6 +1,6 @@
 import unittest
 
-from htmlnode import HtmlNode
+from htmlnode import HtmlNode, LeafNode
 
 
 class TestHtmlNode(unittest.TestCase):
@@ -39,6 +39,19 @@ class TestHtmlNode(unittest.TestCase):
             {"class": "centered 1col", "id": "greeting"},
         )
         self.assertEqual(node.props_to_html(), ' class="centered 1col" id="greeting"')
+
+    def test_toHtml(self) -> None:
+        node = LeafNode(
+            "a", "GOOGLE", {"href": "https://www.google.com", "target": "_blank"}
+        )
+        self.assertEqual(
+            node.to_html(),
+            '<a href="https://www.google.com" target="_blank">GOOGLE</a>',
+        )
+
+    def test_toHtml_no_tag(self) -> None:
+        node = LeafNode(None, "Hello, world!")
+        self.assertEqual(node.to_html(), "Hello, world!")
 
 
 if __name__ == "__main__":
