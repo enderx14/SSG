@@ -1,5 +1,7 @@
 from typing import Any
 
+# from textnode import TextNode
+
 
 class HtmlNode:
     def __init__(
@@ -67,3 +69,27 @@ class LeafNode(HtmlNode):
         return (
             f"LEAFNODE(\ntag: {self.tag}\n value: {self.value}\n Props: {self.props})"
         )
+
+
+class ParentNode(HtmlNode):
+    def __init__(
+        self,
+        tag: str,
+        children: list[Any],
+        props: dict | None = None,
+    ) -> None:
+        super().__init__(tag, None, children, props)
+
+    def to_html(self) -> str:  # type: ignore
+        if self.tag is None:
+            raise ValueError("Invalid HTML: Parent Nodes must have a Tag")
+        if self.children is None:
+            raise ValueError("Invalid HTML: Parent Nodes must have children nodes")
+        html_output: str = f"<{self.tag}>"
+        for child in self.children:
+            html_output += child.to_html()
+        html_output += f"</{self.tag}>"
+        return html_output
+
+    def __repr__(self) -> str:
+        return f"PARENTNODE(\ntag: {self.tag}\n children: {self.children}\n Props: {self.props})"
