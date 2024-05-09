@@ -6,7 +6,9 @@ from inline_markdown import (
     extract_markdown_links,
     split_nodes_delimiter,
     split_nodes_image,
+    text_to_textnodes,
 )
+from markdown_blocks import block_to_block_type, markdown_to_blocks
 from textnode import TextNode, text_node_to_html_node, text_type_code, text_type_text
 
 
@@ -49,6 +51,31 @@ def main() -> None:
         text_type_text,
     )
     new_nodes: list[TextNode] = split_nodes_image([node])
+    text = "This is **text** with an *italic* word and a `code block` and an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and a [link](https://boot.dev)"
+    # print(text_to_textnodes(text))
+    markdown = """This is **bolded** paragraph
+
+    ## This is a Heading 2
+
+
+    ```print("hello world");
+       print("\n")
+    ```
+
+> THIS IS A QUOTE FROM MJ
+>THE GIRL IS SO DANGEROUS    
+
+This is another paragraph with *italic* text and `code` here
+This is the same paragraph on a new line
+
+
+1. This is a list
+2. with items
+3. multiple years worth
+"""
+    # print(markdown_to_blocks(markdown))
+    for block in markdown_to_blocks(markdown):
+        print(block_to_block_type(block))
 
 
 if __name__ == "__main__":
