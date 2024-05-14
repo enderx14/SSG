@@ -8,7 +8,17 @@ from inline_markdown import (
     split_nodes_image,
     text_to_textnodes,
 )
-from markdown_blocks import block_to_block_type, markdown_to_blocks
+from markdown_blocks import (
+    block_code_to_htmlNode,
+    block_head_to_htmlNode,
+    block_ol_to_htmlNode,
+    block_p_to_htmlNode,
+    block_quote_to_htmlNode,
+    block_to_block_type,
+    block_ul_to_htmlNode,
+    markdown_to_blocks,
+    markdown_to_html_node,
+)
 from textnode import TextNode, text_node_to_html_node, text_type_code, text_type_text
 
 
@@ -59,23 +69,29 @@ def main() -> None:
 
 
     ```print("hello world");
-       print("\n")
+       print("")
     ```
 
 > THIS IS A QUOTE FROM MJ
->THE GIRL IS SO DANGEROUS    
+> THE GIRL IS SO DANGEROUS    
 
 This is another paragraph with *italic* text and `code` here
 This is the same paragraph on a new line
 
 
-1. This is a list
-2. with items
-3. multiple years worth
+* This is a list
+* with items
+* multiple years worth
 """
     # print(markdown_to_blocks(markdown))
+    # print("\n")
+    print(markdown_to_html_node(markdown).to_html())
+
     for block in markdown_to_blocks(markdown):
-        print(block_to_block_type(block))
+        if block_to_block_type(block) == "paragraph":
+            pass
+            # print(block_p_to_htmlNode(block).to_html())
+        # print(block_to_block_type(block))
 
 
 if __name__ == "__main__":
