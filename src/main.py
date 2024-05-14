@@ -20,6 +20,7 @@ from markdown_blocks import (
     markdown_to_html_node,
 )
 from textnode import TextNode, text_node_to_html_node, text_type_code, text_type_text
+from utils import copy_dir
 
 
 def main() -> None:
@@ -85,13 +86,20 @@ This is the same paragraph on a new line
 """
     # print(markdown_to_blocks(markdown))
     # print("\n")
-    print(markdown_to_html_node(markdown).to_html())
+    # print(markdown_to_html_node(markdown).to_html())
 
     for block in markdown_to_blocks(markdown):
         if block_to_block_type(block) == "paragraph":
             pass
             # print(block_p_to_htmlNode(block).to_html())
         # print(block_to_block_type(block))
+
+    root_src_dir = "/home/ender/Projects/BootDev/SSG/static"  # Path/Location of the source directory
+    root_dst_dir = (
+        "/home/ender/Projects/BootDev/SSG/public"  # Path to the destination folder
+    )
+
+    copy_dir(root_src_dir, root_dst_dir)
 
 
 if __name__ == "__main__":
