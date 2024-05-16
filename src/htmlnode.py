@@ -31,7 +31,7 @@ class HtmlNode:
             and sorted(self.props.items()) == sorted(other.props.items())
         )
 
-    def to_html(self) -> None:
+    def to_html(self) -> None:  # type: ignore
         raise NotImplementedError("Subclass Should implement this")
 
     def props_to_html(self) -> str:

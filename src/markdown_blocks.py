@@ -73,11 +73,6 @@ def block_head_to_htmlNode(block: str) -> HtmlNode:
     else:
         return ParentNode("h6", text_to_children(block.lstrip("###### ")))
 
-    # tag - A string representing the HTML tag name (e.g. "p", "a", "h1", etc.)
-    # value - A string representing the value of the HTML tag (e.g. the text inside a paragraph)
-    # children - A list of HTMLNode objects representing the children of this node
-    # props - A dictionary of key-value pairs representing the attributes of the HTML tag. For example, a link (<a> tag) might have {"href": "https://www.google.com"}
-
 
 def block_quote_to_htmlNode(block: str) -> HtmlNode:
     lines: list[str] = block.split("\n")
@@ -132,7 +127,7 @@ def text_to_children(text: str) -> list[HtmlNode]:
     return html_nodes
 
 
-def markdown_to_html_node(markdown) -> HtmlNode:
+def markdown_to_html_node(markdown) -> ParentNode:
     block_list: list[str] = markdown_to_blocks(markdown)
     html_node_list: list[HtmlNode] = []
     block_dict = {}
@@ -151,4 +146,12 @@ def markdown_to_html_node(markdown) -> HtmlNode:
         elif block_to_block_type(block) == block_type_unordered_list:
             html_node_list.append(block_ul_to_htmlNode(block))
     return ParentNode("div", html_node_list)
-    # print(block_dict)
+
+
+def extract_title(markdown) -> str:
+    blocks: list[str] = markdown_to_blocks(markdown)
+    h1: str = ""
+    for block in blocks:
+        if block_to_block_type(block) == block_type_heading and block.startswith("# "):
+            h1 = block.lstrip("#").strip()
+    return h1
