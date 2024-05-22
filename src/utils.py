@@ -1,8 +1,9 @@
 import os
 import shutil
+from pathlib import Path
 from typing import Any
 
-from htmlnode import HtmlNode, ParentNode
+from htmlnode import ParentNode
 from markdown_blocks import extract_title, markdown_to_html_node
 
 
@@ -39,10 +40,29 @@ def generate_page(from_path: str, template_path: str, dest_path: str):
     to_write: str = template_content.replace("{{ Title }}", title).replace(
         "{{ Content }}", html
     )
-    # print(template_content)
     folder: str = os.path.dirname(dest_path)
     if not os.path.exists(folder):
-        os.makedirs(folder)
+        os.makedirs(folder, exist_ok=True)
     file: Any = open(dest_path, "w")
     file.write(to_write)
     file.close()
+
+
+def generate_pages_recursive(
+    dir_path_content: str, template_path: str, dest_dir_path: str
+) -> None:
+    if not os.path.exists(dir_path_content):
+        raise ValueError("Error in Source Folder")
+    for src_dir, dirs, files in os.walk(dir_path_content):
+        for file in files:
+            file_name: str = os.path.join(src_dir, file)
+            if Path(file_name).suffix == ".md":
+                dir: str = src_dir.removeprefix(dir_path_content).lstrip("/")
+                dest_path: str = os.path.join(
+                    dest_dir_path, dir, file.removesuffix(".md") + ".html"
+                )
+                generate_page(
+                    file_name,
+                    template_path,
+                    dest_path,
+                )

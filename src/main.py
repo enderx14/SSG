@@ -1,19 +1,28 @@
 import os
 import shutil
 
-from utils import copy_dir, generate_page
+from utils import copy_dir, generate_pages_recursive
+
+dir_path_static = "./static"
+dir_path_public = "./public"
+dir_path_content = "./content"
+template_path = "./template.html"
 
 
 def main() -> None:
-    root_src_dir = "/home/ender/Projects/BootDev/SSG/static"
-    root_dst_dir = "/home/ender/Projects/BootDev/SSG/public"
+
     print("Deleting Public Folder")
-    if os.path.exists(root_dst_dir):
-        shutil.rmtree(root_dst_dir)
+    if os.path.exists(dir_path_public):
+        shutil.rmtree(dir_path_public)
 
     print("Copying static files to public directory...")
-    copy_dir(root_src_dir, root_dst_dir)
-    generate_page("./content/index.md", "template.html", "./public/index.html")
+    copy_dir(dir_path_static, dir_path_public)
+    print("Generating Content")
+    generate_pages_recursive(
+        dir_path_content,
+        template_path,
+        dir_path_public,
+    )
 
 
 if __name__ == "__main__":
